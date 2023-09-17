@@ -51,7 +51,7 @@ def write_txt(filename, content):
         print(f"Error al escribir en el archivo '{filename}'")
 
 def get_hash(text):
-    hash_object = hashlib.sha1(text.encode()) # sha1, sha256, sha512, md5 aqui puedes cambiar el algoritmo de hash
+    hash_object = hashlib.sha256(text.encode()) # sha1, sha256, sha512, md5 aqui puedes cambiar el algoritmo de hash
     return hash_object.hexdigest()
 
 def substitute(text, substitution_table):
@@ -87,8 +87,8 @@ def decrypt(ciphertext):
     plaintext = ciphertext
 
     # Deshacer la operación XOR
+    plaintext = ''.join([chr(ord(c) ^ ord(k)) for c, k in zip(plaintext, key)])
     
-
     for round in reversed(range(num_ronds)):
         # Deshacer la permutación
         plaintext = permute(plaintext, key)
@@ -103,15 +103,14 @@ def main():
     hash_original = get_hash(plaintext)
     ciphertext = encrypt(plaintext + '\n' + hash_original)
     write_txt("mensajeseguro.txt", ciphertext)
-    print(ciphertext)
 
     decrypted_text = decrypt(''.join(read_txt("mensajeseguro.txt"))) # Leemos todo el contenido en una cadena
     decrypted_lines = decrypted_text.split('\n')
     decrypted_message = '\n'.join(decrypted_lines[:-1])
     received_hash = decrypted_lines[-1]
-    print(received_hash)
-
+    
     calculated_hash = get_hash(decrypted_message)
+
     if received_hash == calculated_hash:
         print("La integridad del mensaje es válida.")
     else:
