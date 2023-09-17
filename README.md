@@ -6,6 +6,10 @@
 - Sebastian Allende
 - Gian Franco Astorga
 
+#### Fecha de Entrega
+
+- 19 de septiembre
+
 #### Instrucciones de uso
 
 - Para ejecutar el programa de cifrado, se debe ejecutar el siguiente comando:
