@@ -1,132 +1,83 @@
+### Laboratorio 2 - Seguridad Informática ###
 import hashlib
 import time
-import random
-
-# Definimos la tabla de sustitución como variable global
-
-substitute_table = {
-        'a': 'x',
-        'b': 'y',
-        'c': 'z',
-        'd': 'm',
-        'e': 'n',
-        'f': 'o',
-        'g': 'p',
-        'h': 'q',
-        'i': 'r',
-        'j': 's',
-        'k': 't',
-        'l': 'u',
-        'm': 'v',
-        'n': 'w',
-        'o': 'a',
-        'p': 'b',
-        'q': 'c',
-        'r': 'd',
-        's': 'e',
-        't': 'f',
-        'u': 'g',
-        'v': 'h',
-        'w': 'i',
-        'x': 'j',
-        'y': 'k',
-        'z': 'l',
-        ' ': ' ',
-        '\n': '\n'
-    }
+from cryptography.fernet import Fernet
 
 def read_txt(filename):
     try:
-        with open(filename, 'r+') as file:
+        with open(filename, 'r') as file:
             return file.read()
-    except FileNotFoundError:
-        print(f"Error: No se encontró el archivo '{filename}'")
-        return []
+    except FileNotFoundError: 
+        return "ERROR: No se encontro el archivo"
 
 def write_txt(filename, content):
     try:
-        with open(filename, 'w+') as file:
+        with open(filename, 'wb') as file: # wb = write binary
             file.write(content)
-    except IOError:
-        print(f"Error al escribir en el archivo '{filename}'")
+    except IOError: # Input/Output error
+        return "ERROR: No se pudo escribir el archivo"
 
 def get_hash(text):
     hash_object = hashlib.sha256(text.encode()) # sha1, sha256, sha512, md5 aqui puedes cambiar el algoritmo de hash
     return hash_object.hexdigest()
 
-def substitute(text, substitution_table):
-    substitution_text = ''.join([substitution_table[char] if char in substitution_table else char for char in text])
-    return substitution_text
+def generate_key():
+    return Fernet.generate_key()
 
-def permute(text, permutation_seed):
-    random.seed(permutation_seed)
-    text_list = list(text)
-    random.shuffle(text_list)
-    return ''.join(text_list)
+def encrypt(text, key):
+    f = Fernet(key)
+    return f.encrypt(text.encode())
 
-def encrypt(text): # Feistel
-    key = "MiClaveSecreta" # Aqui puedes cambiar la clave segura
-
-    num_ronds = 5 # Aqui puedes cambiar el numero de rondas que se necesiten
-    ciphertext = text
-
-    for round in range(num_ronds):
-        # Sustitución
-        ciphertext = substitute(ciphertext, substitute_table)
-        # Permutación
-        ciphertext = permute(ciphertext, key)
-    
-    ciphertext = ''.join([chr(ord(c) ^ ord(k)) for c, k in zip(ciphertext, key)]) # Operación XOR
-    
-    return ciphertext
-
-def decrypt(ciphertext):
-
-    key = "MiClaveSecreta" # Debe ser la misma clave utilizada para cifrar
-    num_ronds = 5 # Debe ser el mismo número de rondas utilizado para cifrar
-    plaintext = ciphertext
-
-    # Deshacer la operación XOR
-    plaintext = ''.join([chr(ord(c) ^ ord(k)) for c, k in zip(plaintext, key)])
-    
-    for round in reversed(range(num_ronds)):
-        # Deshacer la permutación
-        plaintext = permute(plaintext, key)
-        # Deshacer la sustitución
-        plaintext = substitute(plaintext, substitute_table)
-
-    return plaintext
+def decrypt(ciphertext, key):
+    try:
+        f = Fernet(key)
+        decrypted = f.decrypt(ciphertext.encode()).decode()
+        return decrypted
+    except:
+        return "ERROR: No se pudo descifrar el texto"
 
 def main():
-    plaintext = ''.join(read_txt("mensajedeentrada.txt")) # Leemos todo el contenido en una cadena
-    print(plaintext)
-    hash_original = get_hash(plaintext)
-    ciphertext = encrypt(plaintext + '\n' + hash_original)
-    write_txt("mensajeseguro.txt", ciphertext)
-
-    decrypted_text = decrypt(''.join(read_txt("mensajeseguro.txt"))) # Leemos todo el contenido en una cadena
-    decrypted_lines = decrypted_text.split('\n')
-    decrypted_message = '\n'.join(decrypted_lines[:-1])
-    received_hash = decrypted_lines[-1]
     
-    calculated_hash = get_hash(decrypted_message)
+    input_file = "mensajedeentrada.txt"
+    output_file = "mensajeseguro.txt"
+    plaintext = read_txt(input_file)
+    
+    print("----------------------------------------")
+    print("[+] Texto plano:", plaintext)
+    
+    if plaintext is not None:
+        key = generate_key()
+        print("[+] Llave generada:", key)
+        
+        hash_original = get_hash(plaintext).encode()  # Convertir el hash a bytes
+        ciphertext = encrypt(plaintext, key)
+        print("[+] Texto cifrado:", ciphertext)
+        write_txt(output_file, ciphertext + b'\n' + hash_original) 
 
-    if received_hash == calculated_hash:
-        print("La integridad del mensaje es válida.")
-    else:
-        print("Error: La integridad del mensaje ha sido comprometida.")
+        print("[+] Archivo cifrado guardado en:", output_file)
+        print("----------------------------------------")
+        print("Descifrando mensaje...")
+        time.sleep(1)
+        
+        current_ciphertext = read_txt(output_file) 
+        print("[+] Texto cifrado:", current_ciphertext)
+        
+        decrypted = decrypt(current_ciphertext, key)
+        print("[+] Texto descifrado:", decrypted)
+        
+        print("\n----------------------------------------")
+        print("[+] Prueba de integridad del archivo cifrado:")
 
+        stored_hash = current_ciphertext.split('\n')[-1]  # Obtenemos el último hash almacenado
+        current_hash = get_hash(decrypted)  # Calculamos el hash del texto descifrado
+
+        if current_hash == stored_hash:
+            print("      No se detectaron modificaciones en el archivo cifrado")
+        else:
+            print("      Se detectó una modificación en el archivo cifrado")
+
+        
 if __name__ == "__main__":
     main()
-    time.sleep(1)
     
-    print("\n\n")
-    print("Prueba de modificación del archivo cifrado:")
-    modified_text = ""
-    write_txt("mensajeseguro.txt", modified_text)
-    # Intenta descifrar el archivo modificado
-    decrypted_text = decrypt(read_txt("mensajeseguro.txt"))
-    if "ERROR" in decrypted_text:
-        print("La modificación del archivo cifrado ha sido detectada.")
-    else:
-        print("El archivo cifrado modificado no ha sido detectado.")
+    
