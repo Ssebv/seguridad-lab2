@@ -14,13 +14,15 @@
 
 - Para ejecutar el programa de cifrado, se debe ejecutar el siguiente comando:
 ``` 
-
+python3 main.py
 ```
 
 #### Dependencias
 
 - Python 3.11
 - pipenv (contiene las dependencias necesarias para ejecutar el programa)
+- pipenv shell (para activar el entorno virtual)
+- Recordar seleccionar el interprete de python 3.11 en el entorno virtual que se crea al ejecutar el comando pipenv shell
 
 #### Descripción del problema
 
