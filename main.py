@@ -3,9 +3,11 @@ import hashlib
 import time
 from cryptography.fernet import Fernet
 
+# Funciones para leer y escribir archivos
+
 def read_txt(filename):
     try:
-        with open(filename, 'r') as file:
+        with open(filename, 'r') as file: # r = read
             return file.read()
     except FileNotFoundError: 
         return "ERROR: No se encontro el archivo"
@@ -17,52 +19,56 @@ def write_txt(filename, content):
     except IOError: # Input/Output error
         return "ERROR: No se pudo escribir el archivo"
 
+# Funciones para generar el hash, la llave y cifrar/descifrar
+
 def get_hash(text):
     hash_object = hashlib.sha256(text.encode()) # sha1, sha256, sha512, md5 aqui puedes cambiar el algoritmo de hash
-    return hash_object.hexdigest()
+    return hash_object.hexdigest() # Convertir el hash a hexadecimal
 
 def generate_key():
-    return Fernet.generate_key()
+    return Fernet.generate_key() # Generar una llave aleatoria
 
 def encrypt(text, key):
-    f = Fernet(key)
-    return f.encrypt(text.encode())
+    f = Fernet(key) # Crear un objeto Fernet
+    return f.encrypt(text.encode()) # Cifrar el texto
 
 def decrypt(ciphertext, key):
     try:
-        f = Fernet(key)
-        decrypted = f.decrypt(ciphertext.encode()).decode()
-        return decrypted
+        f = Fernet(key) # Crear un objeto Fernet
+        decrypted = f.decrypt(ciphertext.encode()).decode() # Descifrar el texto
+        return decrypted # Retornar el texto descifrado
     except:
         return "ERROR: No se pudo descifrar el texto"
+
+# Función principal
 
 def main():
     
     input_file = "mensajedeentrada.txt"
     output_file = "mensajeseguro.txt"
-    plaintext = read_txt(input_file)
+    plaintext = read_txt(input_file) # Leer el archivo de texto plano 
     
     print("----------------------------------------")
     print("[+] Texto plano:", plaintext)
     
-    if plaintext is not None:
-        key = generate_key()
+    if plaintext is not None: # Si el archivo no está vacío
+        key = generate_key() # Generar una llave aleatoria 
         print("[+] Llave generada:", key)
         
         hash_original = get_hash(plaintext).encode()  # Convertir el hash a bytes
-        ciphertext = encrypt(plaintext, key)
-        print("[+] Texto cifrado:", ciphertext)
-        write_txt(output_file, ciphertext + b'\n' + hash_original) 
+        ciphertext = encrypt(plaintext, key)  # Cifrar el texto plano
+        print("[+] Texto cifrado:", ciphertext)  
+        write_txt(output_file, ciphertext + b'\n' + hash_original) # Escribir el texto cifrado en un archivo
 
         print("[+] Archivo cifrado guardado en:", output_file)
         print("----------------------------------------")
         print("Descifrando mensaje...")
-        time.sleep(1)
+        time.sleep(1) # Esperar 1 segundo
         
-        current_ciphertext = read_txt(output_file) 
-        print("[+] Texto cifrado:", current_ciphertext)
+        current_ciphertext = read_txt(output_file) # Leer el archivo cifrado 
+        print("[+] Texto cifrado:", current_ciphertext) 
         
-        decrypted = decrypt(current_ciphertext, key)
+        decrypted = decrypt(current_ciphertext, key) # Descifrar el texto cifrado
         print("[+] Texto descifrado:", decrypted)
         
         print("\n----------------------------------------")
@@ -71,11 +77,15 @@ def main():
         stored_hash = current_ciphertext.split('\n')[-1]  # Obtenemos el último hash almacenado
         current_hash = get_hash(decrypted)  # Calculamos el hash del texto descifrado
 
-        if current_hash == stored_hash:
+        if current_hash == stored_hash: # Comparamos los hashes
             print("      No se detectaron modificaciones en el archivo cifrado")
         else:
             print("      Se detectó una modificación en el archivo cifrado")
 
+        print("----------------------------------------")
+
+# Ejecutar el programa
+# $ python main.py
         
 if __name__ == "__main__":
     main()

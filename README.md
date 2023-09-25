@@ -32,12 +32,12 @@ Con un segundo programa generar la operacion a la inversa, generando el mismo me
 
 - Lee el contenido de un archivo llamado "mensajedeentrada.txt" como texto sin formato.
 
-- Calcula el valor hash SHA-1 del texto sin formato.
+- Genera una clave de cifrado aleatoria.
 
-- Encripta el mensaje utilizando un cifrado Feistel, donde realiza sustitución y permutación en varias rondas.
+- Calcula el valor hash SHA-256 del texto sin formato.
 
-- Escribe el mensaje cifrado en un archivo llamado "mensajeseguro.txt", agregando el valor hash calculado al final.
+- Cifra el texto sin formato usando la clave de cifrado generada.
 
-- Lee el contenido del archivo cifrado y lo intenta desencriptar.
+- Guarda el texto cifrado en un archivo llamado "mensajeseguro.txt". El archivo contiene el texto cifrado y el valor hash calculado.
 
-- Verifica la integridad del mensaje comparando el valor hash recibido con el valor hash calculado del mensaje desencriptado.
+- Verifica la integridad del mensaje cifrado.
