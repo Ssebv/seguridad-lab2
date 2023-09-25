@@ -1,0 +1,16 @@
+----------------------------------------
+[+] Texto plano: Este es un mensaje de prueba.
+b'W3v_t7bQaUtWQ2ojlxteGFoLVGn3U8B8oeb_qv6_MXM='
+[+] Llave generada: b'W3v_t7bQaUtWQ2ojlxteGFoLVGn3U8B8oeb_qv6_MXM='
+[+] Texto cifrado: b'gAAAAABlEdIUVXwOADleuIo6Fq0DovTogXVKkmVfJDx5GVuDxqjwXyNPPLY7AffMl4JUWrwP6n-VZeRDl-tXMpxZLIi1iMHIlVCwoqTxpetap4jBFcEvoUE='
+[+] Archivo cifrado guardado en: mensajeseguro.txt
+----------------------------------------
+Descifrando mensaje...
+[+] Texto cifrado: gAAAAABlEdIUVXwOADleuIo6Fq0DovTogXVKkmVfJDx5GVuDxqjwXyNPPLY7AffMl4JUWrwP6n-VZeRDl-tXMpxZLIi1iMHIlVCwoqTxpetap4jBFcEvoUE=
+c173bdbb8be6a80c25f713bc22c2bfac5502e76980711c5a22879f6512cc76c6
+[+] Texto descifrado: Este es un mensaje de prueba.
+
+----------------------------------------
+[+] Prueba de integridad del archivo cifrado:
+      No se detectaron modificaciones en el archivo cifrado
+----------------------------------------

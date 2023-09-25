@@ -1,52 +1,51 @@
-### Laboratorio 2 - Seguridad Informática ###
+### Laboratorio 2 - Seguridad Informática ##
+
 import hashlib
 import time
 from cryptography.fernet import Fernet
 
-# Funciones para leer y escribir archivos
-
-def read_txt(filename):
+def read_txt(filename):  # Función para leer un archivo de texto
     try:
         with open(filename, 'r') as file: # r = read
             return file.read()
     except FileNotFoundError: 
         return "ERROR: No se encontro el archivo"
 
-def write_txt(filename, content):
+def write_txt(filename, content): # Función para escribir un archivo de texto
     try:
         with open(filename, 'wb') as file: # wb = write binary
             file.write(content)
     except IOError: # Input/Output error
         return "ERROR: No se pudo escribir el archivo"
 
-# Funciones para generar el hash, la llave y cifrar/descifrar
-
-def get_hash(text):
-    hash_object = hashlib.sha256(text.encode()) # sha1, sha256, sha512, md5 aqui puedes cambiar el algoritmo de hash
+def get_hash(text): # Función para obtener el hash de un texto
+    hash_object = hashlib.sha256(text.encode()) # sha1, sha256, sha512 aqui puedes cambiar el algoritmo de hash
     return hash_object.hexdigest() # Convertir el hash a hexadecimal
 
-def generate_key():
-    return Fernet.generate_key() # Generar una llave aleatoria
+def generate_key(): # Función para generar una llave aleatoria
+    clave = Fernet.generate_key()
+    return clave # Generar una llave aleatoria
 
-def encrypt(text, key):
-    f = Fernet(key) # Crear un objeto Fernet
-    return f.encrypt(text.encode()) # Cifrar el texto
+def encrypt(text, key): # Función para cifrar un texto
+    try:
+        f = Fernet(key) # Crear un objeto Fernet de cifrado simétrico
+        return f.encrypt(text.encode()) # Cifrar a los bytes del texto plano
+    except:
+        return "ERROR: No se pudo cifrar el texto"
 
-def decrypt(ciphertext, key):
+def decrypt(ciphertext, key): # Función para descifrar un texto
     try:
         f = Fernet(key) # Crear un objeto Fernet
-        decrypted = f.decrypt(ciphertext.encode()).decode() # Descifrar el texto
+        decrypted = f.decrypt(ciphertext.encode()).decode() # Descifrar el texto cifrado y convertirlo a texto plano con decode()
         return decrypted # Retornar el texto descifrado
     except:
         return "ERROR: No se pudo descifrar el texto"
 
-# Función principal
-
-def main():
+def main(): # Función principal
     
-    input_file = "mensajedeentrada.txt"
-    output_file = "mensajeseguro.txt"
-    plaintext = read_txt(input_file) # Leer el archivo de texto plano 
+    input_file = "mensajedeentrada.txt" # Nombre del archivo de entrada
+    output_file = "mensajeseguro.txt" # Nombre del archivo de salida
+    plaintext = read_txt(input_file)
     
     print("----------------------------------------")
     print("[+] Texto plano:", plaintext)
@@ -83,11 +82,8 @@ def main():
             print("      Se detectó una modificación en el archivo cifrado")
 
         print("----------------------------------------")
-
-# Ejecutar el programa
-# $ python main.py
         
-if __name__ == "__main__":
+if __name__ == "__main__": # Función para ejecutar el programa
     main()
     
     
