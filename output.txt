@@ -1,12 +1,13 @@
 ----------------------------------------
 [+] Texto plano: Este es un mensaje de prueba.
-b'W3v_t7bQaUtWQ2ojlxteGFoLVGn3U8B8oeb_qv6_MXM='
-[+] Llave generada: b'W3v_t7bQaUtWQ2ojlxteGFoLVGn3U8B8oeb_qv6_MXM='
-[+] Texto cifrado: b'gAAAAABlEdIUVXwOADleuIo6Fq0DovTogXVKkmVfJDx5GVuDxqjwXyNPPLY7AffMl4JUWrwP6n-VZeRDl-tXMpxZLIi1iMHIlVCwoqTxpetap4jBFcEvoUE='
+[+] Llave generada: b'i58h4-SqHp4Anp9nNpPCNEqwd7vC4qFOVHA5QK71uDM='
+[+] Texto cifrado: b'gAAAAABlEde-Pv2QKl74fo5Qkc0lge_gwFykEry5lCaH68Zcjvd9YhNAR3EF8ZtxZghiWcbio2UlKdCoIgObhhem1pSkofWPgExV-yWz8JgrF9vQN-baAH8='
 [+] Archivo cifrado guardado en: mensajeseguro.txt
 ----------------------------------------
 Descifrando mensaje...
-[+] Texto cifrado: gAAAAABlEdIUVXwOADleuIo6Fq0DovTogXVKkmVfJDx5GVuDxqjwXyNPPLY7AffMl4JUWrwP6n-VZeRDl-tXMpxZLIi1iMHIlVCwoqTxpetap4jBFcEvoUE=
+gAAAAABlEde-Pv2QKl74fo5Qkc0lge_gwFykEry5lCaH68Zcjvd9YhNAR3EF8ZtxZghiWcbio2UlKdCoIgObhhem1pSkofWPgExV-yWz8JgrF9vQN-baAH8=
+c173bdbb8be6a80c25f713bc22c2bfac5502e76980711c5a22879f6512cc76c6
+[+] Texto cifrado: gAAAAABlEde-Pv2QKl74fo5Qkc0lge_gwFykEry5lCaH68Zcjvd9YhNAR3EF8ZtxZghiWcbio2UlKdCoIgObhhem1pSkofWPgExV-yWz8JgrF9vQN-baAH8=
 c173bdbb8be6a80c25f713bc22c2bfac5502e76980711c5a22879f6512cc76c6
 [+] Texto descifrado: Este es un mensaje de prueba.
 
